@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Escalaf&#243;n - Imposible</title>
+<style>
+            body {
+            	background-image:url('papiro.jpg')
+		  }
+
+		  #ccontainer{
+		  width:1150px;
+          position: relative;
+		  margin: 405px;
+		  margin-top:200px;
+		  }
+</style>
+<script>
+window.onload = function(){
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+var quizbg = new Image();
+var Question = new String;
+var Option1 = new String;
+var Option2 = new String;
+var Option3 = new String;
+var my=0;
+var CorrectAnswer = 0;
+var qnumber = 0;
+var rightanswers=0;
+var wronganswers=0;
+var QuizFinished = false;
+var lock = false;                 
+var textpos1=45;
+var textpos2=150;
+var textpos3=235;
+var textpos4=320;
+var Questions = ["El derecho internacional publico","El patrimonio es","Extincion de un contrato por hecho imputable a una parte","El objeto de un contrato de locacion de cosa es","Las obligaciones principales en el contrato de locacion de cosa son","Organismo que autoriza a las personas juridicas privadas","La responsabilidad de un socio comanditado es","Los socios de una sociedad Accidental son","El derecho de asociacion se puede encontrar en...","La tipicidad se establece en","El empleo autonomo esta regulado por el derecho","El empleo en relacion de dependencia esta regulado por el derecho","El orden publico laboral establece","Cual no es una obligacion del empleador?","A un trabajador con 6 meses de antiguedad se debe preavisar con","En caso de que el empleador no otorgue el preaviso debera"];
+var Options = [["Regula la relacion de los estados entre si y con los Org.Internacionales","Establece los poderes del estado y los derechos fundamentales","Regula el trabajo de dependencia"] , ["El conjunto de bienes de una persona suceptible de apreciacion pecuniaria","La posicion juridica del hombre en la sociedad","La designacion exclusiva que corresponde a una persona"] , ["Resolucion","Nulidad","Rescision"] , ["Permitir el uso de cosas muebles o inmuebles","Dar la cosa en propiedad","Realizacion de una obra o trabajo pactado"] , ["Permitir y garantizar el uso de la cosa locada y pagar el precio","Entregar la cosa locada y pagar el precio","Realizar la obra y entregarla y pagar el precio y recibir la cosa"] , ["Inspeccion General de Justicia","Administracion Nacional de Ingresos Publicos","Consejo de la Magistatura"] , ["Subsidiara, ilimitada y solidaria","Subsidiaria, limitada y solidaria","Limitada y solidaria"] , ["Gestores y no gestores","Capitalistas e industriales","Comanditados y comanditarios"] , ["La Constitucion Nacional","El Codigo Civil","El Codigo Comercial"] , ["La Ley de Sociedades Comerciales","El Codigo Comercial","El Codigo Civil"] , ["Civil","Administrativo","Laboral"] , ["Laboral","Civil","Administrativo"] , ["Resguardo legal debajo del cual no existen acuerdos validos","Limites para las ganancias segun la actividad que se desarrolla","Normas de seguridad que deben ser acatadas para regular ciertas actividades"] , ["Diligencia y colaboracion extraordinaria","Remuneracion, deber de seguridad y ocupacion","Trato igualitario y previsionales"] , ["Un mes de anticipo","Quince dias de anticipo","Dos meses de anticipo"] , ["Pagar indemnizacion sustitutiva e integracion del mes de despido","No pagar indemnizacion","Pagar indemnizacion por antiguedad"]];
+quizbg.onload = function(){
+context.drawImage(quizbg, 0, 0);
+SetQuestions();
+}//quizbg
+quizbg.src = "quizbg.png";
+SetQuestions = function(){
+Question= Questions[qnumber];
+CorrectAnswer=1+Math.floor(Math.random()*3);
+if(CorrectAnswer==1){Option1=Options[qnumber][0];Option2=Options[qnumber][1];Option3=Options[qnumber][2];}                                                  
+if(CorrectAnswer==2){Option1=Options[qnumber][2];Option2=Options[qnumber][0];Option3=Options[qnumber][1];}
+if(CorrectAnswer==3){Option1=Options[qnumber][1];Option2=Options[qnumber][2];Option3=Options[qnumber][0];}
+context.textBaseline = "middle";
+context.font = "22pt Comic Sans MS,Arial";
+context.fillText(Question,80,textpos1);
+context.font = "18pt Comic Sans MS,Arial";
+context.fillText(Option1,80,textpos2);
+context.fillText(Option2,80,textpos3);
+context.fillText(Option3,80,textpos4);
+}//SetQuestions
+canvas.addEventListener('click',ProcessClick,false);
+function ProcessClick(ev) {                 
+my=ev.y-canvas.offsetTop; 
+if(ev.y == undefined){
+my = ev.pageY - canvas.offsetTop; 
+}
+if(lock){ 
+ResetQ();
+}//if lock 
+else{
+if(my>300 && my<370){GetFeedback(1);} 
+if(my>390 && my<460){GetFeedback(2);}
+if(my>480 && my<550){GetFeedback(3);} 
+}//!lock
+}//ProcessClick
+GetFeedback = function(a){ 
+if(a==CorrectAnswer){ 
+context.drawImage(quizbg, 0,400,75,70,1060,115+(85*(a-1)),75,70);
+rightanswers++; 
+}              
+else{ 
+context.drawImage(quizbg, 75,400,75,70,1060,115+(85*(a-1)),75,70);
+wronganswers++; 
+}
+context.font = "14pt Comic Sans MS,Arial"; 
+context.fillText("Clickea de nuevo para continuar.",20,380);
+lock=true; 
+}//get feedback
+ResetQ= function(){ 
+lock=false;
+context.clearRect(0,0,550,400); 
+qnumber++;
+if(qnumber==Questions.length){EndQuiz();} 
+else{
+context.drawImage(quizbg, 0, 0); 
+SetQuestions();}
+}
+var quizres = new Image();
+quizres.src = "quizres.png";
+quizres.onload = function(){
+context.drawResult(quizres, 0, 0);
+}//quizres
+EndQuiz=function(){ 
+canvas.removeEventListener('click',ProcessClick,false);
+context.drawImage(quizres, 0,0,1150,470,0,-3,1155,480); 
+context.font = "20pt Comic Sans MS,Arial";
+context.fillText("Has completado la dificultad!",80,100); 
+context.font = "16pt Comic Sans MS,Arial";
+context.fillText("Puntaje positivo: "+(15*+String(rightanswers)),80,200); 
+context.fillText("Puntaje negativo: "+(2*+String(wronganswers)),80,240);
+context.fillText("Puntaje Final: "+((15*+String(rightanswers))-(2*+String(wronganswers))),80,280);
+}
+};//windowonload
+</script>
+</head>
+<body>
+<div id="ccontainer"> <canvas id="myCanvas" width="1150" height="400"> </canvas> </div>
+</body>
+</html>

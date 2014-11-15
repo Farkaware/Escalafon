@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Escalaf&#243;n - Medio</title>
+<style>
+            body {
+            	background-image:url('papiro.jpg')
+		  }
+
+		  #ccontainer{
+		  width:1150px;
+          position: relative;
+		  margin: 405px;
+		  margin-top:200px;
+		  }
+</style>
+<script>
+window.onload = function(){
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+var quizbg = new Image();
+var Question = new String;
+var Option1 = new String;
+var Option2 = new String;
+var Option3 = new String;
+var my=0;
+var CorrectAnswer = 0;
+var qnumber = 0;
+var rightanswers=0;
+var wronganswers=0;
+var QuizFinished = false;
+var lock = false;                 
+var textpos1=45;
+var textpos2=150;
+var textpos3=235;
+var textpos4=320;
+var Questions = ["El derecho positivo se divide en","La doctrina es","El domicilio general","Se llama consentimiento a","En el contrato de locacion de cosa","Las personas juridicas privadas tienen independencia de","El contrato social debe ser","En las Sociedades de Responsabilidad Limitada","Las personas juridicas no poseen","La construccion es","Segun la LCT el trabajo es","Los funcionarios","La estabilidad se alcanza cuando","El derecho laboral se divide en"];
+var Options = [["Objetivo y subjetivo","Publico y privado","Positivo y natural"] , ["Es la opinion de los juristas","Es el conjunto de fallos de los jueces","Es una conducta repetida en el tiempo"] , ["Rige para todas las relaciones juridicas","Rige para relaciones juridicas particulares","Esta para gozar de la proteccion del codigo de comercio"] , ["La coincidencia de la voluntad de las partes","Las prestaciones a cargo de las partes","El conjunto de formalidades y solemnidades establecidas por la ley"] , ["Una parte transfiera a otra el uso de una cosa","Una parte transfiere a la otra una cosa en propiedad","Una de las partes se obliga a prestar servicios a otra"] , ["Personalidad, patrimonios y titularidad de derechos","Patrimonio, capacidad y consentimiento","Patrimonio, titularidad de derechos y objeto"] , ["Licito, posible y determinado","Ilicito, posible y no prohibido","Ambas"] , ["El capital se divide en cuotas","El capital se divide en acciones","El capital se divide en aportes"] , ["Estado","Domicilio","Capacidad"] , ["Una actividad civil","Una actividad comercial","Ninguna de las anteriores"] , ["Toda actividad licita que se preste en favor de quien tenga la facultad de dirigirla","Toda actividad realizada por el hombre con esfuerzo fisico o mental","Toda actividad licita prestada a cambio de una remuneracion"] , ["Ocupan los cargos mas altos","Realizan tareas de menor importancia","Ocupan cargos de menor jerarquia"] , ["Se acreditan condiciones de idoneidad","Cuando los funcionarios lo determinen","Ninguna de las anteriores"] , ["Individual, colectivo, internacional, administrativo y procesal","Individual y colectivo, administrativo y civil","Colectivo e internacional, procesal y civil"]];
+quizbg.onload = function(){
+context.drawImage(quizbg, 0, 0);
+SetQuestions();
+}//quizbg
+quizbg.src = "quizbg.png";
+SetQuestions = function(){
+Question= Questions[qnumber];
+CorrectAnswer=1+Math.floor(Math.random()*3);
+if(CorrectAnswer==1){Option1=Options[qnumber][0];Option2=Options[qnumber][1];Option3=Options[qnumber][2];}                                                  
+if(CorrectAnswer==2){Option1=Options[qnumber][2];Option2=Options[qnumber][0];Option3=Options[qnumber][1];}
+if(CorrectAnswer==3){Option1=Options[qnumber][1];Option2=Options[qnumber][2];Option3=Options[qnumber][0];}
+context.textBaseline = "middle";
+context.font = "22pt Comic Sans MS,Arial";
+context.fillText(Question,80,textpos1);
+context.font = "18pt Comic Sans MS,Arial";
+context.fillText(Option1,80,textpos2);
+context.fillText(Option2,80,textpos3);
+context.fillText(Option3,80,textpos4);
+}//SetQuestions
+canvas.addEventListener('click',ProcessClick,false);
+function ProcessClick(ev) {                 
+my=ev.y-canvas.offsetTop; 
+if(ev.y == undefined){
+my = ev.pageY - canvas.offsetTop; 
+}
+if(lock){ 
+ResetQ();
+}//if lock 
+else{
+if(my>300 && my<370){GetFeedback(1);} 
+if(my>390 && my<460){GetFeedback(2);}
+if(my>480 && my<550){GetFeedback(3);} 
+}//!lock
+}//ProcessClick
+GetFeedback = function(a){ 
+if(a==CorrectAnswer){ 
+context.drawImage(quizbg, 0,400,75,70,1060,115+(85*(a-1)),75,70);
+rightanswers++; 
+}              
+else{ 
+context.drawImage(quizbg, 75,400,75,70,1060,115+(85*(a-1)),75,70);
+wronganswers++; 
+}
+context.font = "14pt Comic Sans MS,Arial"; 
+context.fillText("Clickea de nuevo para continuar.",20,380);
+lock=true; 
+}//get feedback
+ResetQ= function(){ 
+lock=false;
+context.clearRect(0,0,550,400); 
+qnumber++;
+if(qnumber==Questions.length){EndQuiz();} 
+else{
+context.drawImage(quizbg, 0, 0); 
+SetQuestions();}
+}
+var quizres = new Image();
+quizres.src = "quizres.png";
+quizres.onload = function(){
+context.drawResult(quizres, 0, 0);
+}//quizres
+EndQuiz=function(){ 
+canvas.removeEventListener('click',ProcessClick,false);
+context.drawImage(quizres, 0,0,1150,470,0,-3,1155,480); 
+context.font = "20pt Comic Sans MS,Arial";
+context.fillText("Has completado la dificultad!",80,100); 
+context.font = "16pt Comic Sans MS,Arial";
+context.fillText("Puntaje positivo: "+(7*+String(rightanswers)),80,200); 
+context.fillText("Puntaje negativo: "+(5*+String(wronganswers)),80,240);
+context.fillText("Puntaje Final: "+((7*+String(rightanswers))-(5*+String(wronganswers))),80,280);
+}
+};//windowonload
+</script>
+</head>
+<body>
+<div id="ccontainer"> <canvas id="myCanvas" width="1150" height="400"> </canvas> </div>
+</body>
+</html>

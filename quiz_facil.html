@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Escalaf&#243;n - Facil</title>
+<style>
+            body {
+            	background-image:url('papiro.jpg')
+		  }
+
+		  #ccontainer{
+		  width:1150px;
+          position: relative;
+		  margin: 405px;
+		  margin-top:200px;
+		  }
+</style>
+<script>
+window.onload = function(){
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+var quizbg = new Image();
+var Question = new String;
+var Option1 = new String;
+var Option2 = new String;
+var Option3 = new String;
+var my=0;
+var CorrectAnswer = 0;
+var qnumber = 0;
+var rightanswers=0;
+var wronganswers=0;
+var QuizFinished = false;
+var lock = false;                 
+var textpos1=45;
+var textpos2=150;
+var textpos3=235;
+var textpos4=320;
+var Questions = ["Las normas juridicas emanan de","Las normas sociales traen como sancion","Las normas morales son aplicadas por","Fin de la existencia de las personas juridicas","Las personas juridicas son","Segun sus beneficios, las organizaciones pueden ser","Son organizaciones sin fines de lucro","Las asociaciones tendran por principal objeto","La sociedad con participacion estatal es aquella donde","En una S.A., el capital se divide en","Caracteristicas del trabajo segun la LCT","El empleo publico reune 3 principios","Convocatoria de la Administracion publica","El proceso sumarial es","Una obligacion sinalgamatica es cuando"];
+var Options = [["Autoridad Estatal Competente","Convenciones Sociales","Valores y preceptos eticos del sujeto"] , ["Rechazo social","Las establecidas por la ley","Culpa, cargo de conciencia"] , ["El propio sujeto por autoconvincion","La sociedad en general","Organos especificos del estado"] , ["Disposicion legal, cumplimiento del objeto","Muerte clinica","Desaparicion con presuncion de muerte"] , ["Entes ficticios autorizados para funcionar","Aquellas que presentan rasgos de humanidad","Aquella que siendo concebidas no han nacido"] , ["Con o sin fines de lucro","Independientes o dependientes","Grandes o chicas"] , ["Asociaciones y fundaciones","Sociedades civiles y comerciales","Asociaciones y sociedades comerciales"] , ["El bien comun","El lucro","La produccion de bienes y servicios"] , ["El estado es titular del 51% del capital o mas","Los socios capitalistas poseen responsabilidad subsidiaria, limitada y solidaria","Los socios comanditados poseen responsabilidad subsidiara, ilimitada y solidaria"] , ["Acciones","Cuotas","Ninguna de las anteriores"] , ["Productividad, ajenidad, libertad","Libertad, voluntad y capacidad","Estabilidad, idoneidad, igualdad"] , ["Idoneidad, estabilidad e igualdad","Capacidad, idoneidad e igualdad","Estabilidad, idoneidad y capacidad"] , ["Concurso","Escalafon","Procedimiento Sumarial"] , ["Una investigacion interna","Una obligacion de los empleados publicos","Un derecho y una obligacion de los empleados publicos"] , ["A cada obligacion de una parte le corresponde un derecho de la otra","Cuando debe pagarse la remuneracion pactada","Cuando se deben otorgar las condiciones de trabajos dignas"]];
+quizbg.onload = function(){
+context.drawImage(quizbg, 0, 0);
+SetQuestions();
+}//quizbg
+quizbg.src = "quizbg.png";
+SetQuestions = function(){
+Question= Questions[qnumber];
+CorrectAnswer=1+Math.floor(Math.random()*3);
+if(CorrectAnswer==1){Option1=Options[qnumber][0];Option2=Options[qnumber][1];Option3=Options[qnumber][2];}                                                  
+if(CorrectAnswer==2){Option1=Options[qnumber][2];Option2=Options[qnumber][0];Option3=Options[qnumber][1];}
+if(CorrectAnswer==3){Option1=Options[qnumber][1];Option2=Options[qnumber][2];Option3=Options[qnumber][0];}
+context.textBaseline = "middle";
+context.font = "22pt Comic Sans MS,Arial";
+context.fillText(Question,80,textpos1);
+context.font = "18pt Comic Sans MS,Arial";
+context.fillText(Option1,80,textpos2);
+context.fillText(Option2,80,textpos3);
+context.fillText(Option3,80,textpos4);
+}//SetQuestions
+canvas.addEventListener('click',ProcessClick,false);
+function ProcessClick(ev) {                 
+my=ev.y-canvas.offsetTop; 
+if(ev.y == undefined){
+my = ev.pageY - canvas.offsetTop; 
+}
+if(lock){ 
+ResetQ();
+}//if lock 
+else{
+if(my>300 && my<370){GetFeedback(1);} 
+if(my>390 && my<460){GetFeedback(2);}
+if(my>480 && my<550){GetFeedback(3);} 
+}//!lock
+}//ProcessClick
+GetFeedback = function(a){ 
+if(a==CorrectAnswer){ 
+context.drawImage(quizbg, 0,400,75,70,1060,115+(85*(a-1)),75,70);
+rightanswers++; 
+}              
+else{ 
+context.drawImage(quizbg, 75,400,75,70,1060,115+(85*(a-1)),75,70);
+wronganswers++; 
+}
+context.font = "14pt Comic Sans MS,Arial"; 
+context.fillText("Clickea de nuevo para continuar.",20,380);
+lock=true; 
+}//get feedback
+ResetQ= function(){ 
+lock=false;
+context.clearRect(0,0,550,400); 
+qnumber++;
+if(qnumber==Questions.length){EndQuiz();} 
+else{
+context.drawImage(quizbg, 0, 0); 
+SetQuestions();}
+}
+var quizres = new Image();
+quizres.src = "quizres.png";
+quizres.onload = function(){
+context.drawResult(quizres, 0, 0);
+}//quizres
+EndQuiz=function(){ 
+canvas.removeEventListener('click',ProcessClick,false);
+context.drawImage(quizres, 0,0,1150,470,0,-3,1155,480); 
+context.font = "20pt Comic Sans MS,Arial";
+context.fillText("Has completado la dificultad!",80,100); 
+context.font = "16pt Comic Sans MS,Arial";
+context.fillText("Puntaje positivo: "+(5*+String(rightanswers)),80,200); 
+context.fillText("Puntaje negativo: "+(7*+String(wronganswers)),80,240);
+context.fillText("Puntaje Final: "+((5*+String(rightanswers))-(7*+String(wronganswers))),80,280);
+}
+};//windowonload
+</script>
+</head>
+<body>
+<div id="ccontainer"> <canvas id="myCanvas" width="1150" height="400"> </canvas> </div>
+</body>
+</html>
