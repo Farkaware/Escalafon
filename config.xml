@@ -4,9 +4,9 @@
         id        = "com.gonzalosistemas.esclafon"
         version   = "1.0.0">
 
-    <name>Censos</name>
+    <name>Escalafon</name>
 
-    <description>App para realizar censos.</description>
+    <description>Juego de preguntas y respuestas sobre derecho.</description>
 
     <author href="http://gonzalosistemas.com.ar" email="gonzalo.farfanuk@gmail.com">gonzalosistemas</author>
 
